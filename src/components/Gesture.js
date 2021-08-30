@@ -17,7 +17,13 @@ import styled from 'styled-components'
 const TRIGGER_ELEMENT_SIZE = 600 //px
 const EMIT_TRESHOLD = 75 //ms
 
-const Gesture = ({ position, pointerDown, onGesture, debug = false }) => {
+const Gesture = ({
+	enableGestures,
+	position,
+	pointerDown,
+	onGesture,
+	debug = false
+}) => {
 	const [history, setHistory] = useState([])
 	const [prevTreshold, setPrevTreshold] = useState(0)
 	const [lastEmit, setLastEmit] = useState(0)
@@ -70,11 +76,8 @@ const Gesture = ({ position, pointerDown, onGesture, debug = false }) => {
 		}
 	}
 
-	return (
+	return enableGestures ? (
 		<Container y={position.y} x={position.x}>
-			{/* {gestureMessage && (
-				<GestureMessage>{gestureMessage}</GestureMessage>
-			)} */}
 			<Trigger showDebugLine={debug}>
 				{[...Array(4)].map((el, i) => (
 					<TriggerElement
@@ -85,7 +88,7 @@ const Gesture = ({ position, pointerDown, onGesture, debug = false }) => {
 				))}
 			</Trigger>
 		</Container>
-	)
+	) : null
 }
 
 const Container = styled.div.attrs((props) => ({

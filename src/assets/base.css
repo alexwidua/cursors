@@ -42,3 +42,9 @@ article {
 input {
 	font-family: var(--sans-font);
 }
+
+input[type='checkbox'],
+label {
+	position: relative;
+	z-index: 1;
+}

@@ -22,6 +22,7 @@ const INDEX_MAP = {
 }
 
 const RadialMenu = ({
+	enablePingMessages,
 	clients,
 	localClient,
 	lastReceivedPingMessage,
@@ -35,6 +36,7 @@ const RadialMenu = ({
 				lastReceivedPingMessage={lastReceivedPingMessage}
 			/>
 			<Menu
+				enablePingMessages={enablePingMessages}
 				localClient={localClient}
 				onPingEvent={onPingEvent}
 				onMenuOpen={onMenuOpen}
@@ -47,7 +49,7 @@ const RadialMenu = ({
 /**
  * Radial menu
  */
-const Menu = ({ localClient, onPing, onMenuOpen }) => {
+const Menu = ({ enablePingMessages, localClient, onPing, onMenuOpen }) => {
 	const { pointer } = localClient
 
 	const [isVisible, setIsVisible] = useState(true)
@@ -58,6 +60,7 @@ const Menu = ({ localClient, onPing, onMenuOpen }) => {
 
 	// Display menu after long mouse press
 	useEffect(() => {
+		if (!enablePingMessages) return
 		let timer
 		setFreezeMenuInCurrentPosition({
 			x: localClient.x,

@@ -8,8 +8,8 @@ import Heading from './components/layout//Heading'
 import Cursor from './components/Cursor'
 import DrawAndAnnotate from './components/DrawAnnotate'
 import Gesture from './components/Gesture'
-import PingMessage from './components/RadialMenu'
-import PingContextual from './components/ContextualPing'
+import Ping from './components/Ping'
+import ContextualPing from './components/ContextualPing'
 
 import { CURSOR_HEIGHT, NAME_BADGE_HEIGHT } from './components/Cursor'
 
@@ -55,6 +55,7 @@ function App() {
 	const [clients, setClients] = useState({})
 
 	// Single features
+	const [enablePingMessages, setEnablePingMessages] = useState(false)
 	const [lastReceivedPingMessage, setLastReceivedPingMessage] = useState({
 		id: null,
 		index: -1
@@ -63,7 +64,7 @@ function App() {
 		id: null,
 		type: null
 	})
-
+	const [enableGestures, setEnableGestures] = useState(false)
 	const [lastReceivedGesture, setLastReceivedGesture] = useState({
 		id: null,
 		gesture: null,
@@ -410,7 +411,7 @@ function App() {
 				</article>
 				<article>
 					<Heading index={2} sup={'Explicit'}>
-						Messages
+						Cursor messages
 					</Heading>
 					<p>
 						Nunc tincidunt nulla eu porttitor posuere. Mauris et
@@ -422,7 +423,7 @@ function App() {
 				</article>
 				<article>
 					<Heading index={3} sup={'Explicit + Implicit'}>
-						Pings
+						Radial Menu
 					</Heading>
 					<p>
 						Nunc tincidunt nulla eu porttitor posuere. Mauris et
@@ -431,7 +432,18 @@ function App() {
 						gravida tellus ut ex luctus, et volutpat augue
 						vestibulum.
 					</p>
-					<PingMessage
+					<label>
+						<input
+							type="checkbox"
+							onClick={() =>
+								setEnablePingMessages((prev) => !prev)
+							}
+							checked={enablePingMessages}
+						/>
+						Enable radial menu
+					</label>
+					<Ping
+						enablePingMessages={enablePingMessages}
 						clients={{ LOCAL_CLIENT: localClient, ...clients }}
 						localCursorPosition={localClient}
 						localCursorProps={localClient.pointer}
@@ -452,7 +464,7 @@ function App() {
 						gravida tellus ut ex luctus, et volutpat augue
 						vestibulum.
 					</p>
-					<PingContextual
+					<ContextualPing
 						clients={{ LOCAL_CLIENT: localClient, ...clients }}
 						lastContextualPing={lastContextualPing}
 						onContextualPing={handleContextualPing}
@@ -470,7 +482,16 @@ function App() {
 						gravida tellus ut ex luctus, et volutpat augue
 						vestibulum.
 					</p>
+					<label>
+						<input
+							type="checkbox"
+							onClick={() => setEnableGestures((prev) => !prev)}
+							checked={enableGestures}
+						/>
+						Enable gestures
+					</label>
 					<Gesture
+						enableGestures={enableGestures}
 						position={localClient}
 						pointerDown={localClient.pointerDown}
 						onGesture={handleGesture}
