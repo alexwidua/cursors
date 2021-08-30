@@ -5,10 +5,10 @@
 
 import React, { useRef, useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
-import {
-	LOCAL_CLIENT_PRIMARY_COLOR,
-	LOCAL_CLIENT_CHAT_BUBBLE_COLOR
-} from '../constants'
+import { LOCAL_CLIENT_PRIMARY_COLOR } from '../constants'
+
+export const CURSOR_HEIGHT = 24
+export const NAME_BADGE_HEIGHT = 18
 
 // Cursor chat
 const CURSOR_CHAT_HOTKEY = 'c'
@@ -28,8 +28,9 @@ const CursorComponent = ({
 	isLocal = false,
 	clientName,
 	position,
+	cursorIsInViewport,
 	color = '#000',
-	cursorIsInViewport = true,
+	clientWindowIsFocused = true,
 	lastEmittedMessage = '',
 	lastEmittedGesture,
 	onEmitMessage
@@ -38,13 +39,15 @@ const CursorComponent = ({
 		<Cursor
 			cursorX={position.x}
 			cursorY={position.y}
-			cursorColor={color}
 			cursorIsInViewport={cursorIsInViewport}
+			cursorColor={color}
+			clientWindowIsFocused={clientWindowIsFocused}
 			isLocal={isLocal}>
 			{/* Show cursor chat */}
 			<CursorChat
 				id={id}
 				isLocal={isLocal}
+				cursorIsInViewport={cursorIsInViewport}
 				color={color}
 				lastEmittedMessage={lastEmittedMessage}
 				onEmitMessage={onEmitMessage}>
@@ -62,6 +65,7 @@ const CursorComponent = ({
 const CursorChat = ({
 	id,
 	isLocal,
+	cursorIsInViewport,
 	color,
 	lastEmittedMessage,
 	onEmitMessage,
@@ -156,6 +160,7 @@ const CursorChat = ({
 			<ChatBubble
 				isVisible={id || chatBubbleIsVisible}
 				isLocal={isLocal}
+				cursorIsInViewport={cursorIsInViewport}
 				color={isLocal ? '#eee' : color}>
 				{/* Display name badge only for remote cursors */}
 				{id && (
@@ -227,7 +232,9 @@ const GestureMessage = ({ lastEmittedGesture, textColor }) => {
 const Cursor = styled.div.attrs((props) => ({
 	style: {
 		transform: `translate3d(${props.cursorX}px, ${props.cursorY}px, 0)`,
-		opacity: props.cursorIsInViewport ? '1' : '0.2',
+		opacity: props.clientWindowIsFocused ? '1' : '0.2',
+		width: `${props.cursorIsInViewport ? 24 : '0'}px`,
+		height: `${props.cursorIsInViewport ? 24 : '0'}px`,
 		// Smoothing the local chat bubble makes it feel sluggish
 		transition: props.isLocal ? 'none' : 'transform 0.05s'
 	}
@@ -236,8 +243,6 @@ const Cursor = styled.div.attrs((props) => ({
 	top: 0;
 	left: 0;
 	z-index: 9999;
-	width: 24px;
-	height: 24px;
 	color: ${(props) => (props.isLocal ? LOCAL_CLIENT_PRIMARY_COLOR : '#fff')};
 	background-image: ${(props) =>
 		props.isLocal
@@ -255,26 +260,32 @@ const Cursor = styled.div.attrs((props) => ({
 
 const NameBadge = styled.div.attrs((props) => ({
 	style: {
-		fontSize: props.minimizeName ? '12px' : '14px',
-		opacity: props.minimizeName ? '0.6' : '1'
+		fontSize: props.minimizeName ? 12 : 14,
+		opacity: props.minimizeName ? 0.6 : 1
 	}
 }))`
+	height: ${NAME_BADGE_HEIGHT}px;
+	line-height: ${NAME_BADGE_HEIGHT}px;
 	transition: font-size 0.2s, opacity 0.2s; ;
 `
 
 const ChatBubble = styled.div.attrs((props) => ({
 	style: {
-		backgroundColor: props.color
+		top: `${props.cursorIsInViewport ? 24 : 0}px`,
+		left: `${props.cursorIsInViewport ? 12 : 0}px`,
+		backgroundColor: props.color,
+		borderRadius: props.cursorIsInViewport
+			? props.isLocal
+				? '12px 12px 2px 12px'
+				: '2px 12px 12px 12px'
+			: NAME_BADGE_HEIGHT
 	}
 }))`
 	position: absolute;
-	top: 24px;
-	left: 12px;
 	display: inline-block;
-	padding: 10px;
-	border-radius: ${(props) =>
-		props.isLocal ? '12px 12px 2px 12px' : '2px 12px 12px 12px'};
+	padding: 8px 12px;
 	opacity: ${(props) => (props.isVisible ? '1' : '0')};
+	transition: opacity 0.2s, border-radius 0.2s;
 
 	& input {
 		padding: 6px;

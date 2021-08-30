@@ -138,7 +138,7 @@ const PingContextual = ({ clients, lastContextualPing, onContextualPing }) => {
 				onMouseDown={handleMouseDownText}
 				onMouseLeave={() => setSelectedText(null)}>
 				<LogoMeta {...useContextualMessage('TEXT_META')}>
-					{TEXT_HEADING}
+					{TEXT_HEADING }
 				</LogoMeta>
 				<TextNode {...useContextualMessage('TEXT_DEFAULT')}>
 					<span onMouseEnter={() => setSelectedText('TEXT_DEFAULT')}>

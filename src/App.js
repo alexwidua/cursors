@@ -11,6 +11,8 @@ import Gesture from './components/Gesture'
 import PingMessage from './components/RadialMenu'
 import PingContextual from './components/ContextualPing'
 
+import { CURSOR_HEIGHT, NAME_BADGE_HEIGHT } from './components/Cursor'
+
 const SOCKET_SRV = process.env.APP_LOCAL_IP + ':' + process.env.APP_LOCAL_PORT
 const SOCKET = socketIOClient(SOCKET_SRV)
 
@@ -29,9 +31,10 @@ const INIT_CLIENT_DATA = {
 	},
 	clientBounds: {
 		height: 0,
-		width: 0
+		width: 0,
+		pageYOffset: 0
 	},
-	cursorIsInViewport: true,
+	clientWindowIsFocused: true,
 	lastEmittedMessage: ''
 }
 
@@ -119,7 +122,7 @@ function App() {
 			 * Handle receiving cursor movement of 'remote' cursors
 			 */
 			SOCKET.on('broadcast_update_cursor_move', (data) => {
-				console.log('Yo')
+				console.log(data)
 				// Naive interpolation between different browser widths
 				// to make sure that remote cursor has correct position
 				const localWidth = Math.max(
@@ -147,12 +150,12 @@ function App() {
 			/**
 			 * Handle focus/blur of remove cursors
 			 */
-			SOCKET.on('broadcast_update_cursor_in_viewport', (data) => {
+			SOCKET.on('broadcast_update_cursor_focus_blur', (data) => {
 				setClients((prev) => ({
 					...prev,
 					[data.id]: {
 						...prev[data.id],
-						cursorIsInViewport: data.active
+						clientWindowIsFocused: data.active
 					}
 				}))
 			})
@@ -209,13 +212,13 @@ function App() {
 	/**
 	 * Emit event if local clients loses focus of window
 	 */
-	const handleCursorEnterViewport = () => {
-		SOCKET.emit('handle_update_cursor_in_viewport', {
+	const handleCursorFocus = () => {
+		SOCKET.emit('handle_update_cursor_focus_blur', {
 			active: true
 		})
 	}
-	const handleCursorLeaveViewport = () => {
-		SOCKET.emit('handle_update_cursor_in_viewport', {
+	const handleCursorBlur = () => {
+		SOCKET.emit('handle_update_cursor_focus_blur', {
 			active: false
 		})
 	}
@@ -244,7 +247,8 @@ function App() {
 				},
 				clientBounds: {
 					height: window.innerHeight,
-					width: window.innerWidth
+					width: window.innerWidth,
+					pageYOffset: window.pageYOffset
 				}
 			})
 			setLastEmitToServer(now)
@@ -312,8 +316,8 @@ function App() {
 
 	return (
 		<Wrapper
-			onMouseEnter={handleCursorEnterViewport}
-			onMouseLeave={handleCursorLeaveViewport}
+			onMouseEnter={handleCursorFocus}
+			onMouseLeave={handleCursorBlur}
 			onMouseMove={handleCursorMove}
 			onMouseDown={handleMouseDown}
 			onMouseUp={handleMouseUp}
@@ -355,13 +359,26 @@ function App() {
 											? clients[id].x
 											: window.innerWidth,
 									y:
-										clients[id].y < window.innerHeight
-											? clients[id].y
-											: window.innerHeight
+										clients[id].y >
+										window.innerHeight + window.pageYOffset
+											? window.innerHeight +
+											  window.pageYOffset -
+											  CURSOR_HEIGHT
+											: clients[id].y + CURSOR_HEIGHT <
+											  window.pageYOffset
+											? window.pageYOffset
+											: clients[id].y
 								}}
-								color={clients[id].color}
 								cursorIsInViewport={
-									clients[id].cursorIsInViewport
+									clients[id].y <
+										window.innerHeight +
+											window.pageYOffset &&
+									clients[id].y + CURSOR_HEIGHT >
+										window.pageYOffset
+								}
+								color={clients[id].color}
+								clientWindowIsFocused={
+									clients[id].clientWindowIsFocused
 								}
 								lastEmittedMessage={
 									clients[id].lastEmittedMessage

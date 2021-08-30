@@ -62,9 +62,9 @@ io.sockets.on('connection', (socket) => {
 		socket.broadcast.emit('broadcast_update_cursor_move', data)
 	})
 
-	socket.on('handle_update_cursor_in_viewport', (data) => {
+	socket.on('handle_update_cursor_focus_blur', (data) => {
 		data.id = id
-		socket.broadcast.emit('broadcast_update_cursor_in_viewport', data)
+		socket.broadcast.emit('broadcast_update_cursor_focus_blur', data)
 	})
 
 	socket.on('handle_update_chat_message', (data) => {
