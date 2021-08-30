@@ -1,0 +1,6 @@
+{
+  "extends": [
+    "@zilahir/stylelint-config-rational-order",
+    "stylelint-config-styled-components"
+  ]
+}
