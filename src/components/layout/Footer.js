@@ -6,10 +6,19 @@ const Footer = () => {
 		<Container>
 			<p>
 				<em>Cursors</em> is a small summer '21 exploration by{' '}
-				<a href='https://www.alexwidua.com/'>Alex Widua</a> 🍹🏝️
+				<a
+					href='https://www.alexwidua.com/'
+					target='_blank'
+					rel='noopener noreferrer'>
+					Alex Widua
+				</a>{' '}
+				🍹🏝️
 			</p>
 			<p>
-				<a href='https://github.com/alexwidua/cursors'>
+				<a
+					href='https://github.com/alexwidua/cursors'
+					target='_blank'
+					rel='noopener noreferrer'>
 					View the source code on GitHub
 				</a>
 			</p>

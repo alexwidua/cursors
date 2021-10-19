@@ -336,10 +336,22 @@ function App() {
 				</h2>
 				<p>
 					This is a small exploration about explicit and implicit
-					communication in collaborative whiteboarding software (ex.
-					Miro, FigJam), where cursors and how they're displayed to
-					others play a key role in real-time communication with
-					collaborators.
+					communication in collaborative whiteboarding software (ex.{' '}
+					<a
+						href='https://miro.com/'
+						target='_blank'
+						rel='noopener noreferrer'>
+						Miro
+					</a>
+					,{' '}
+					<a
+						href='https://www.figma.com/figjam/'
+						target='_blank'
+						rel='noopener noreferrer'>
+						FigJam
+					</a>
+					), where cursors and how they're displayed to others play a
+					key role in real-time communication with collaborators.
 				</p>
 				<h3>Preface</h3>
 				<p>
@@ -347,7 +359,23 @@ function App() {
 					either mouse or trackpad input – touch gestures are not
 					supported. It also works best if at least two people are
 					interacting with the page – if you don't have a colleague
-					handy, spawn a friend on your local machine.
+					handy,{' '}
+					<a
+						style={{
+							textDecoration: 'underline',
+							cursor: 'pointer'
+						}}
+						target='popup'
+						onClick={() =>
+							window.open(
+								'index.html',
+								'Your local friend',
+								'toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=1, width=1000, height=600'
+							)
+						}>
+						summon a friend on your local machine
+					</a>{' '}
+					✨🎩
 				</p>
 				<h3>Expected learning outcome</h3>
 				<p>
@@ -452,7 +480,10 @@ function App() {
 					<p>
 						While there might be previous occurences of a similar
 						interaction,{' '}
-						<a href='https://help.figma.com/hc/en-us/articles/1500004414842-Send-messages-with-cursor-chat'>
+						<a
+							href='https://help.figma.com/hc/en-us/articles/1500004414842-Send-messages-with-cursor-chat'
+							target='_blank'
+							rel='noopener noreferrer'>
 							'cursor chat' was popularized by Figma in early 2021
 							with the introduction of FigJam
 						</a>
@@ -481,7 +512,10 @@ function App() {
 						requires less cognitive effort and cursor movement
 						compared to a linear menu (this assumption is based on a
 						very small sample size, see also:{' '}
-						<a href='https://donhopkins.medium.com/an-empirical-comparison-of-pie-vs-linear-menus-466c6fdbba4b'>
+						<a
+							href='https://donhopkins.medium.com/an-empirical-comparison-of-pie-vs-linear-menus-466c6fdbba4b'
+							target='_blank'
+							rel='noopener noreferrer'>
 							Hopkins et al., 'An Empirical Comparison of Pie vs.
 							Linear Menus
 						</a>
@@ -534,7 +568,10 @@ function App() {
 					<p>
 						While there might be previous occurences of a similar
 						interaction, it was{' '}
-						<a href='https://www.pcgamer.com/apex-legends-ping-system-is-a-tiny-miracle-for-fps-teamwork-and-communication/'>
+						<a
+							href='https://www.pcgamer.com/apex-legends-ping-system-is-a-tiny-miracle-for-fps-teamwork-and-communication/'
+							target='_blank'
+							rel='noopener noreferrer'>
 							popularized in 2019 by the first-person shooter Apex
 							Legends
 						</a>
