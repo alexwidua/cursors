@@ -10,7 +10,10 @@
 	--mono-font: 'IBM Plex Mono', monospace;
 
 	/* Colors */
-	--color-secondary: #eee;
+	--color-font-title: rgb(0, 0, 0);
+	--color-font-body: rgb(48, 48, 48);
+
+	--color-secondary: rgba(0, 0, 0, 0.035);
 
 	/* Layout */
 	--content-border: 1px solid #eee;
@@ -18,13 +21,46 @@
 }
 body {
 	font-family: var(--sans-font);
+	color: var(--color-font-body);
 }
 
 h1 {
-	margin-bottom: 1.5rem;
 	font-weight: 600;
+	margin-bottom: 0.75rem;
 	font-size: 1.625rem;
 	letter-spacing: -0.03em;
+}
+
+h2 {
+	margin-bottom: 1.5rem;
+	font-weight: 400;
+	font-size: 1.2rem;
+	letter-spacing: -0.02em;
+}
+
+h3 {
+	font-weight: 500;
+	margin-bottom: 0.75rem;
+}
+
+h1,
+h2,
+h3,
+em {
+	color: var(--color-font-title);
+}
+
+em {
+	font-weight: 600;
+	letter-spacing: -0.02em;
+}
+
+i {
+	font-style: italic;
+}
+
+p + h3 {
+	margin-top: 2.5rem;
 }
 
 p {
@@ -33,6 +69,14 @@ p {
 	font-size: 0.875rem;
 	line-height: 1.5;
 	opacity: 0.9;
+}
+
+a {
+	color: var(--color-font-body);
+}
+
+h2 + p {
+	margin-top: 4rem;
 }
 
 article {
