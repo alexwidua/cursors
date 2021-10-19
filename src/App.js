@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { getRandomNumberInRange } from './utils/number'
 
 import Heading from './components/layout//Heading'
+import Footer from './components/layout/Footer'
 import Cursor from './components/Cursor'
 import DrawAndAnnotate from './components/DrawAnnotate'
 import Gesture from './components/Gesture'
@@ -55,7 +56,7 @@ function App() {
 	const [clients, setClients] = useState({})
 
 	// Single features
-	const [enablePingMessages, setEnablePingMessages] = useState(false)
+	const [enablePingMessages, setEnablePingMessages] = useState(true)
 	const [lastReceivedPingMessage, setLastReceivedPingMessage] = useState({
 		id: null,
 		index: -1
@@ -123,7 +124,6 @@ function App() {
 			 * Handle receiving cursor movement of 'remote' cursors
 			 */
 			SOCKET.on('broadcast_update_cursor_move', (data) => {
-				console.log(data)
 				// Naive interpolation between different browser widths
 				// to make sure that remote cursor has correct position
 				const localWidth = Math.max(
@@ -261,12 +261,12 @@ function App() {
 	 */
 	const handleMouseDown = (e) => {
 		// Prevent middle click default event since various features rely on middle click
-		if (e.button === 1) {
+		if (e.button === 1 || (e.button === 0 && e.altKey)) {
 			e.preventDefault()
 		}
 		setLocalClient((prev) => ({
 			...prev,
-			pointer: { down: true, ctrl: e.ctrlKey, type: e.button }
+			pointer: { down: true, ctrl: e.altKey, type: e.button }
 		}))
 	}
 	const handleMouseUp = (e) => {
@@ -325,16 +325,32 @@ function App() {
 			style={{ '--content-max-width': `${CONTENT_MAX_WIDTH}px` }}>
 			<Container>
 				<h1>Cursors</h1>
+				<h2>
+					Exploring explicit and implicit communication through
+					cursors
+				</h2>
 				<p>
-					This is a short intro. Lorem ipsum dolor sit amet,
-					consectetur adipiscing elit. Pellentesque bibendum hendrerit
-					imperdiet.
+					This is a small exploration about explicit and implicit
+					communication in collaborative whiteboarding software (ex.
+					Miro, FigJam), where cursors and how they're displayed to
+					others play a key role in real-time communication with
+					collaborators.
 				</p>
+				<h3>Preface</h3>
 				<p>
-					Nunc tincidunt nulla eu porttitor posuere. Mauris et urna
-					nulla. Morbi hendrerit porttitor erat. Mauris vel est eu
-					erat malesuada faucibus at et nisl. Vestibulum gravida
-					tellus ut ex luctus, et volutpat augue vestibulum.
+					This exploration and demo is intended for devices with
+					either mouse or trackpad input – touch gestures are not
+					supported. It also works best if at least two people are
+					interacting with the page – if you don't have a colleague
+					handy, spawn a friend on your local machine.
+				</p>
+				<h3>Expected learning outcome</h3>
+				<p>
+					The expected learning outcome of this exploration is to
+					explore different modes of explicit and implicit
+					cursor-based communication and furthermore prototype, how a
+					technical implementation of each feature could look like.
+					The code can be found on GitHub.
 				</p>
 				{/* Local cursor */}
 				<Cursor
@@ -395,53 +411,86 @@ function App() {
 				})}
 				{/* 01 Annotations */}
 				<article>
-					<Heading index={1} sup={'Explicit'}>
+					<Heading index={1} sup={'Explicit ⟶ Implicit'}>
 						Annotations
 					</Heading>
 					<p>
-						Nunc tincidunt nulla eu porttitor posuere. Mauris et
-						urna nulla. Morbi hendrerit porttitor erat. Mauris vel
-						est eu erat malesuada faucibus at et nisl. Vestibulum
-						gravida tellus ut ex luctus, et volutpat augue
-						vestibulum.
+						Drawing annotations is an explicit action that often
+						leaves little ambiguity as to what the annotation refers
+						to. However, the choice of words or symbols opens up a
+						lot of room for interpretation. Likewise, emotions can
+						be conveyed through e.g. intensity or rhythm of strokes,
+						which can make the intention of a annotation very
+						implicit.
 					</p>
+					<Legend>
+						Draw on the canvas by pressing the <kbd>Left Mouse</kbd>{' '}
+						button and dragging.
+					</Legend>
 					<DrawAndAnnotate
 						clients={{ LOCAL_CLIENT: localClient, ...clients }}
 					/>
 				</article>
 				<article>
-					<Heading index={2} sup={'Explicit'}>
-						Cursor messages
+					<Heading index={2} sup={'Explicit + Implicit'}>
+						Cursor chat
 					</Heading>
 					<p>
-						Nunc tincidunt nulla eu porttitor posuere. Mauris et
-						urna nulla. Morbi hendrerit porttitor erat. Mauris vel
-						est eu erat malesuada faucibus at et nisl. Vestibulum
-						gravida tellus ut ex luctus, et volutpat augue
-						vestibulum.
+						Chat messages are one of the most common way of
+						communicating with other users in digital software.
+						Attaching a user's chat message to the user's cursor
+						adds a spatial dimension to this form of communication.
+						It allows the user to work with otherwise very implicit
+						statements such as 'Look here' while pointing or
+						hovering a point of interest on the canvas.
 					</p>
+					<p>
+						While there might be previous occurences of a similar
+						interaction,{' '}
+						<a href='https://help.figma.com/hc/en-us/articles/1500004414842-Send-messages-with-cursor-chat'>
+							'cursor chat' was popularized by Figma in early 2021
+							with the introduction of FigJam
+						</a>
+						, a collaborative whiteboarding tool.
+					</p>
+					<Legend>
+						Press <kbd>C</kbd> to open the chat, <kbd>Enter</kbd> to
+						send a chat message or <kbd>Esc</kbd> to close the chat
+						modal.
+					</Legend>
 				</article>
 				<article>
 					<Heading index={3} sup={'Explicit + Implicit'}>
-						Radial Menu
+						Pings
 					</Heading>
 					<p>
-						Nunc tincidunt nulla eu porttitor posuere. Mauris et
-						urna nulla. Morbi hendrerit porttitor erat. Mauris vel
-						est eu erat malesuada faucibus at et nisl. Vestibulum
-						gravida tellus ut ex luctus, et volutpat augue
-						vestibulum.
+						In this exploration, Pings are ephemeral landmarks on
+						the canvas which convey a message through emojis. While
+						the action of setting a ping is explicit, the intention
+						can be very implicit because emojis can be ambigious.
+						Also the frequency or arrangment of pings can distort or
+						dilute the intention.
 					</p>
-					<label>
-						<input
-							type="checkbox"
-							onClick={() =>
-								setEnablePingMessages((prev) => !prev)
-							}
-							checked={enablePingMessages}
-						/>
-						Enable radial menu
-					</label>
+					<p>
+						The pinged emoji can be choosen via a pie menu, which
+						requires less cognitive effort and cursor movement
+						compared to a linear menu (this assumption is based on a
+						very small sample size, see also:{' '}
+						<a href='https://donhopkins.medium.com/an-empirical-comparison-of-pie-vs-linear-menus-466c6fdbba4b'>
+							Hopkins et al., 'An Empirical Comparison of Pie vs.
+							Linear Menus
+						</a>
+						).
+					</p>
+					<Legend>
+						Press and hold the <kbd>Middle mouse</kbd> button to
+						open the ping menu. <br />
+					</Legend>
+					<Legend>
+						Alternatively, hold the
+						<kbd>Alt</kbd> / <kbd>Option</kbd> key and press the
+						<kbd>Left Mouse</kbd> button.
+					</Legend>
 					<Ping
 						enablePingMessages={enablePingMessages}
 						clients={{ LOCAL_CLIENT: localClient, ...clients }}
@@ -454,16 +503,49 @@ function App() {
 					/>
 				</article>
 				<article>
-					<Heading index={4} sup={'Explicit'}>
-						Contextual
+					<Heading index={4} sup={'Explicit ⟶ Implicit'}>
+						Contextual Pings
 					</Heading>
 					<p>
-						Nunc tincidunt nulla eu porttitor posuere. Mauris et
-						urna nulla. Morbi hendrerit porttitor erat. Mauris vel
-						est eu erat malesuada faucibus at et nisl. Vestibulum
-						gravida tellus ut ex luctus, et volutpat augue
-						vestibulum.
+						Similar to <em>Pings</em>, <em>Contextual Pings</em> are
+						ephemeral messages that correspond to the element that
+						is 'being pinged'. The user doesn't select the contents
+						of the message itself, but pings an element which could
+						be relevant during a certain moment. The content of the
+						pinged message is a prediction which could be based on
+						different metrics such as who edited the pinged element
+						or if the pinging user made any new changes.
 					</p>
+					<p>
+						The contextual ping is an explicit and very unstable
+						action. The effectiveness of the message depends
+						entirely on the software's prediction and the user has
+						no possibility to intervene or change the message.
+						Similar to the previous examples, the explicit ping can
+						be turned into an implicit message, ex. by spamming a
+						ping to imply importance of something or express
+						annoyance.
+					</p>
+					<p>
+						While there might be previous occurences of a similar
+						interaction, it was{' '}
+						<a href='https://www.pcgamer.com/apex-legends-ping-system-is-a-tiny-miracle-for-fps-teamwork-and-communication/'>
+							popularized in 2019 by the first-person shooter Apex
+							Legends
+						</a>
+						, which used contextual pings as means of accessible,
+						non-verbal communication between players in a fast-paced
+						environment.
+					</p>
+					<Legend>
+						Hover an element on the makeshift canvas and press the{' '}
+						<kbd>Middle Mouse</kbd> button.
+					</Legend>
+					<Legend>
+						Alternatively, hold the
+						<kbd>Alt</kbd> / <kbd>Option</kbd> key and press the
+						<kbd>Left mouse</kbd> button.
+					</Legend>
 					<ContextualPing
 						clients={{ LOCAL_CLIENT: localClient, ...clients }}
 						lastContextualPing={lastContextualPing}
@@ -472,24 +554,31 @@ function App() {
 				</article>
 
 				<article>
-					<Heading index={5} sup={'Implicit'}>
-						Gestures
+					<Heading index={5} sup={'Implicit ⟶ Explicit'}>
+						Cursor gestures
 					</Heading>
 					<p>
-						Nunc tincidunt nulla eu porttitor posuere. Mauris et
-						urna nulla. Morbi hendrerit porttitor erat. Mauris vel
-						est eu erat malesuada faucibus at et nisl. Vestibulum
-						gravida tellus ut ex luctus, et volutpat augue
-						vestibulum.
+						Cursor gesture embodies the nature of implicit body
+						movements. Similar to nodding or shaking the head as act
+						of approval or disapproval, moving the cursor lateral or
+						vertical makes this implicit message explicit.
 					</p>
 					<label>
 						<input
-							type="checkbox"
-							onClick={() => setEnableGestures((prev) => !prev)}
+							type='checkbox'
+							onChange={() => setEnableGestures((prev) => !prev)}
 							checked={enableGestures}
 						/>
-						Enable gestures
+						Enable cursor gestures
 					</label>
+					<Legend>
+						Enable the feature and gesticulate with your cursor.{' '}
+						<br />
+						The available gesture are vertical shaking (
+						<i>nodding</i>), horizontal shaking (<i>head-shaking</i>
+						) and encircling something (
+						<i>emphasizing or highlighting something</i>).
+					</Legend>
 					<Gesture
 						enableGestures={enableGestures}
 						position={localClient}
@@ -497,6 +586,7 @@ function App() {
 						onGesture={handleGesture}
 					/>
 				</article>
+				<Footer />
 			</Container>
 		</Wrapper>
 	)
@@ -506,15 +596,62 @@ const Wrapper = styled.div`
 	position: relative;
 	width: 100%;
 	min-height: 100vh;
-	padding: 64px;
-	border: 1px solid blue;
+	padding: 4rem;
 `
 
 const Container = styled.div`
 	max-width: var(--content-max-width);
 	margin: 0 auto;
-	background: #fff;
-	/* border: 1px red solid; */
+
+	& label {
+		background: var(--color-secondary);
+		border-radius: 0.5rem;
+		margin: 1rem 0;
+		padding: 0.5rem;
+		font-size: 0.875rem;
+		display: inline-flex;
+		align-items: center;
+
+		& input {
+			margin-right: 0.5rem;
+		}
+	}
+
+	& article {
+		margin-bottom: 6rem;
+	}
+`
+
+const Legend = styled.div`
+	background: var(--color-secondary);
+	border-radius: 0.5rem;
+	padding: 1rem;
+	margin: 2rem 0 2rem 0;
+	font-size: 0.875rem;
+	line-height: 1.5;
+
+	& kbd {
+		margin: 0 0.125rem;
+		padding: 0.125rem 0.5rem;
+		border-radius: 0.25rem;
+		font-size: 0.625rem;
+		border: 0.0625rem solid rgb(200, 200, 200);
+		line-height: 1.5;
+		display: inline-block;
+		box-shadow: 0 0.0625rem 0 rgba(0, 0, 0, 0.2),
+			inset 0 0 0 0.125rem #ffffff;
+		background-color: rgb(245, 245, 245);
+		box-shadow: 0 0.0625rem 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #ffffff inset;
+		text-shadow: 0 0.0625rem 0 #fff;
+	}
+
+	label + & {
+		margin-top: 0;
+	}
+
+	& + & {
+		margin-top: -1rem;
+	}
 `
 
 export default App
