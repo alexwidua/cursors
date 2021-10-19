@@ -1,7 +1,7 @@
 // Set up server
-require('dotenv').config()
+//require('dotenv').config()
 const server = require('http').createServer()
-const port = process.env.APP_LOCAL_PORT
+const port = process.env.PORT || 3000
 const io = require('socket.io')(server, {
 	cors: {
 		origin: '*'

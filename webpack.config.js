@@ -6,7 +6,8 @@ module.exports = () => {
 	return {
 		plugins: [
 			new HtmlWebpackPlugin({
-				template: path.resolve(__dirname, 'src/index.html')
+				template: path.resolve(__dirname, 'public/index.html'),
+				favicon: 'public/favicon.png'
 			}),
 			new Dotenv()
 		],
