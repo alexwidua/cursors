@@ -14,7 +14,9 @@ import ContextualPing from './components/ContextualPing'
 
 import { CURSOR_HEIGHT, NAME_BADGE_HEIGHT } from './components/Cursor'
 
-const SOCKET_SRV = process.env.APP_LOCAL_IP + ':' + process.env.APP_LOCAL_PORT
+const HOST = '0.0.0.0'
+const PORT = process.env.PORT || 3000
+const SOCKET_SRV = HOST + ':' + PORT
 const SOCKET = socketIOClient(SOCKET_SRV)
 
 const CONTENT_MAX_WIDTH = 800
