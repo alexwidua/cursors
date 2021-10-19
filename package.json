@@ -4,6 +4,7 @@
 	"description": "Exploring explicit and implicit communication through cursors",
 	"main": "index.js",
 	"scripts": {
+		"build": "webpack build --mode=production",
 		"serve": "webpack serve --mode=development"
 	},
 	"author": "Alexander Widua",
