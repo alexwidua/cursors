@@ -1,1 +1,1 @@
-web: node srv
+web: node server
