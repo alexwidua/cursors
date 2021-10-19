@@ -52,7 +52,7 @@ const RadialMenu = ({
 const Menu = ({ enablePingMessages, localClient, onPing, onMenuOpen }) => {
 	const { pointer } = localClient
 
-	const [isVisible, setIsVisible] = useState(true)
+	const [isVisible, setIsVisible] = useState(false)
 	const [menuItemIndex, setMenuItemIndex] = useState(-1)
 	const [hoveredMenuItemIndex, setHoveredMenuItemIndex] = useState(0)
 	const [freezeMenuInCurrentPosition, setFreezeMenuInCurrentPosition] =
@@ -89,7 +89,10 @@ const Menu = ({ enablePingMessages, localClient, onPing, onMenuOpen }) => {
 	}
 
 	const handleMouseUp = () => {
-		if (menuItemIndex > 0 && pointer.type === 1) {
+		if (
+			(menuItemIndex > 0 && pointer.type === 1) ||
+			(menuItemIndex > 0 && pointer.type === 0)
+		) {
 			emitPingEvent()
 		} else {
 			setMenuItemIndex(0)
@@ -167,9 +170,9 @@ const PingMessage = ({ clients, lastReceivedPingMessage }) => {
 						rotation={el?.rotation || 0}
 						style={{
 							left: el?.x + 'px',
-							top: el?.y + 'px',
+							top: el?.y + 'px'
 							//transform: `rotate(${el?.rotation}deg)`,
-							background: clients[el.id]?.color || '#eee'
+							//background: clients[el.id]?.color || '#eee'
 						}}>
 						{INDEX_MAP[el.index]}
 					</MessageContainer>
@@ -280,7 +283,7 @@ const MessageContainer = styled.div`
 	position: absolute;
 	width: 2rem;
 	height: 2rem;
-	font-size: 1.5rem;
+	font-size: 2rem;
 	line-height: 2rem;
 	text-align: center;
 	border-radius: 100%;
