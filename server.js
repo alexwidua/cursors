@@ -1,11 +1,25 @@
 // Set up server
-//require('dotenv').config()
-const server = require('http').createServer()
+
+const express = require('express')
 const port = process.env.PORT || 3000
-const io = require('socket.io')(server, {
+var app = require('express')()
+var http = require('http').Server(app)
+var io = require('socket.io')(http, {
 	cors: {
 		origin: '*'
 	}
+})
+
+/*
+ *  Serve /dist/ folder
+ */
+app.use(express.static(__dirname + '/dist'))
+app.get(/.*/, (req, res) => {
+	res.sendFile(__dirname + '/dist/index.html')
+})
+
+http.listen(port, () => {
+	console.log(`Listening on port ${port}`)
 })
 
 // Logic
@@ -94,8 +108,4 @@ io.sockets.on('connection', (socket) => {
 		})
 		socket.broadcast.emit('broadcast_update_cursor_gesture', data)
 	})
-})
-
-server.listen(port, () => {
-	console.log('Listening on port:' + port)
 })

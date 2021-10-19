@@ -14,10 +14,13 @@ import ContextualPing from './components/ContextualPing'
 
 import { CURSOR_HEIGHT, NAME_BADGE_HEIGHT } from './components/Cursor'
 
-const HOST = '0.0.0.0'
+const HOST = 'localhost'
 const PORT = process.env.PORT || 3000
 const SOCKET_SRV = HOST + ':' + PORT
-const SOCKET = socketIOClient(SOCKET_SRV)
+const SOCKET =
+	process.env.NODE_ENV === 'development'
+		? socketIOClient(SOCKET_SRV)
+		: socketIOClient()
 
 const CONTENT_MAX_WIDTH = 800
 const THROTTLE_TRESHOLD = 25 // throttle treshold in ms
@@ -568,7 +571,8 @@ function App() {
 					<label>
 						<input
 							type='checkbox'
-							onChange={() => setEnableGestures((prev) => !prev)}
+							onClick={() => setEnableGestures((prev) => !prev)}
+							onChange={() => {}}
 							checked={enableGestures}
 						/>
 						Enable cursor gestures
