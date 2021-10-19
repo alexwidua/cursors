@@ -17,10 +17,10 @@ const TEXT_MISSPELL = 'Fracnisco'
 // Map the message contents of different contexts
 const MESSAGE_MAP = {
 	NULL: 'There was a problem loading the ping message.',
-	LOGO_BODY: 'Look ath the logo',
+	LOGO_BODY: 'Take a look at this logo',
 	LOGO_META: 'Are there any changes?',
-	TEXT_DEFAULT: 'Look at this text',
-	TEXT_ERROR: 'Look at this error',
+	TEXT_DEFAULT: 'Take a look at this text',
+	TEXT_ERROR: 'There seems to be an error',
 	TEXT_META: 'Should we stage this file?'
 }
 
@@ -61,7 +61,7 @@ const PingContextual = ({ clients, lastContextualPing, onContextualPing }) => {
 	 * Handle mouse down, which triggers the contextual ping
 	 */
 	const handleMouseDownText = (e) => {
-		if (e.button !== 1 || !selectedtText) return
+		if ((e.button !== 1 && !e.altKey) || !selectedtText) return
 
 		e.preventDefault()
 		e.stopPropagation()
@@ -138,7 +138,7 @@ const PingContextual = ({ clients, lastContextualPing, onContextualPing }) => {
 				onMouseDown={handleMouseDownText}
 				onMouseLeave={() => setSelectedText(null)}>
 				<LogoMeta {...useContextualMessage('TEXT_META')}>
-					{TEXT_HEADING }
+					{TEXT_HEADING}
 				</LogoMeta>
 				<TextNode {...useContextualMessage('TEXT_DEFAULT')}>
 					<span onMouseEnter={() => setSelectedText('TEXT_DEFAULT')}>
