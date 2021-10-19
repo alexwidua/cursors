@@ -13,13 +13,13 @@ const Heading = ({ index, sup, children }) => {
 const Container = styled.span`
 	display: flex;
 	flex-direction: column;
-	padding: 1rem 0;
+	margin-top: 4rem;
 `
 
 const Sup = styled.p`
 	margin: 0;
-	padding-bottom: 0.25em;
-	font-size: 0.875rem;
+	padding-bottom: 0.875em;
+	font-size: 0.75rem;
 	font-family: monospace;
 `
 
