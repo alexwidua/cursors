@@ -22,7 +22,7 @@ const SOCKET =
 		? socketIOClient(SOCKET_SRV)
 		: socketIOClient()
 
-const CONTENT_MAX_WIDTH = 800
+const CONTENT_MAX_WIDTH = 768
 const THROTTLE_TRESHOLD = 25 // throttle treshold in ms
 
 // Used to initialize client obj with default values
@@ -328,6 +328,70 @@ function App() {
 			onMouseDown={handleMouseDown}
 			onMouseUp={handleMouseUp}
 			style={{ '--content-max-width': `${CONTENT_MAX_WIDTH}px` }}>
+			<Overlay>
+				<span>
+					<svg
+						width="18"
+						height="24"
+						viewBox="0 0 18 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg">
+						<g filter="url(#filter0_d_0:110)">
+							<path
+								d="M3 2V18.015L6.22455 14.8836L8.47949 20.2243L12.0845 18.6893L9.98413 13.619H14.591L3 2Z"
+								fill="white"
+							/>
+							<path
+								d="M4 15.5951V4.4071L12.165 12.5901H8.47119L10.751 18.0086L8.90698 18.7826L6.53729 13.1458L4 15.5951Z"
+								fill="black"
+							/>
+						</g>
+						<defs>
+							<filter
+								id="filter0_d_0:110"
+								x="0.4"
+								y="0.4"
+								width="16.791"
+								height="23.4243"
+								filterUnits="userSpaceOnUse"
+								color-interpolation-filters="sRGB">
+								<feFlood
+									flood-opacity="0"
+									result="BackgroundImageFix"
+								/>
+								<feColorMatrix
+									in="SourceAlpha"
+									type="matrix"
+									values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+									result="hardAlpha"
+								/>
+								<feOffset dy="1" />
+								<feGaussianBlur stdDeviation="1.3" />
+								<feColorMatrix
+									type="matrix"
+									values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.32 0"
+								/>
+								<feBlend
+									mode="normal"
+									in2="BackgroundImageFix"
+									result="effect1_dropShadow_0:110"
+								/>
+								<feBlend
+									mode="normal"
+									in="SourceGraphic"
+									in2="effect1_dropShadow_0:110"
+									result="shape"
+								/>
+							</filter>
+						</defs>
+					</svg>
+				</span>
+				<span>
+					This exploration depends on a mouse input and doesn't work
+					on mobile devices. View this website on a desktop with a
+					mouse or trackpad input to interact with this exploration.
+				</span>
+			</Overlay>
 			<Container>
 				<h1>Cursors</h1>
 				<h2>
@@ -338,16 +402,16 @@ function App() {
 					This is a small exploration about explicit and implicit
 					communication in collaborative whiteboarding software (ex.{' '}
 					<a
-						href='https://miro.com/'
-						target='_blank'
-						rel='noopener noreferrer'>
+						href="https://miro.com/"
+						target="_blank"
+						rel="noopener noreferrer">
 						Miro
 					</a>
 					,{' '}
 					<a
-						href='https://www.figma.com/figjam/'
-						target='_blank'
-						rel='noopener noreferrer'>
+						href="https://www.figma.com/figjam/"
+						target="_blank"
+						rel="noopener noreferrer">
 						FigJam
 					</a>
 					), where cursors and how they're displayed to others play a
@@ -365,7 +429,7 @@ function App() {
 							textDecoration: 'underline',
 							cursor: 'pointer'
 						}}
-						target='popup'
+						target="popup"
 						onClick={() =>
 							window.open(
 								'index.html',
@@ -385,6 +449,7 @@ function App() {
 					technical implementation of each feature could look like.
 					The code can be found on GitHub.
 				</p>
+				<hr />
 				{/* Local cursor */}
 				<Cursor
 					isLocal
@@ -464,6 +529,7 @@ function App() {
 						clients={{ LOCAL_CLIENT: localClient, ...clients }}
 					/>
 				</article>
+				<hr />
 				<article>
 					<Heading index={2} sup={'Explicit + Implicit'}>
 						Cursor chat
@@ -481,9 +547,9 @@ function App() {
 						While there might be previous occurences of a similar
 						interaction,{' '}
 						<a
-							href='https://help.figma.com/hc/en-us/articles/1500004414842-Send-messages-with-cursor-chat'
-							target='_blank'
-							rel='noopener noreferrer'>
+							href="https://help.figma.com/hc/en-us/articles/1500004414842-Send-messages-with-cursor-chat"
+							target="_blank"
+							rel="noopener noreferrer">
 							'cursor chat' was popularized by Figma in early 2021
 							with the introduction of FigJam
 						</a>
@@ -495,6 +561,7 @@ function App() {
 						modal.
 					</Legend>
 				</article>
+				<hr />
 				<article>
 					<Heading index={3} sup={'Explicit + Implicit'}>
 						Pings
@@ -513,9 +580,9 @@ function App() {
 						compared to a linear menu (this assumption is based on a
 						very small sample size, see also:{' '}
 						<a
-							href='https://donhopkins.medium.com/an-empirical-comparison-of-pie-vs-linear-menus-466c6fdbba4b'
-							target='_blank'
-							rel='noopener noreferrer'>
+							href="https://donhopkins.medium.com/an-empirical-comparison-of-pie-vs-linear-menus-466c6fdbba4b"
+							target="_blank"
+							rel="noopener noreferrer">
 							Hopkins et al., 'An Empirical Comparison of Pie vs.
 							Linear Menus
 						</a>
@@ -541,6 +608,7 @@ function App() {
 						onPingEvent={handlePingEvent}
 					/>
 				</article>
+				<hr />
 				<article>
 					<Heading index={4} sup={'Explicit ⟶ Implicit'}>
 						Contextual Pings
@@ -569,9 +637,9 @@ function App() {
 						While there might be previous occurences of a similar
 						interaction, it was{' '}
 						<a
-							href='https://www.pcgamer.com/apex-legends-ping-system-is-a-tiny-miracle-for-fps-teamwork-and-communication/'
-							target='_blank'
-							rel='noopener noreferrer'>
+							href="https://www.pcgamer.com/apex-legends-ping-system-is-a-tiny-miracle-for-fps-teamwork-and-communication/"
+							target="_blank"
+							rel="noopener noreferrer">
 							popularized in 2019 by the first-person shooter Apex
 							Legends
 						</a>
@@ -594,7 +662,7 @@ function App() {
 						onContextualPing={handleContextualPing}
 					/>
 				</article>
-
+				<hr />
 				<article>
 					<Heading index={5} sup={'Implicit ⟶ Explicit'}>
 						Cursor gestures
@@ -607,7 +675,7 @@ function App() {
 					</p>
 					<label>
 						<input
-							type='checkbox'
+							type="checkbox"
 							onClick={() => setEnableGestures((prev) => !prev)}
 							onChange={() => {}}
 							checked={enableGestures}
@@ -639,7 +707,37 @@ const Wrapper = styled.div`
 	position: relative;
 	width: 100%;
 	min-height: 100vh;
-	padding: 4rem;
+	padding: 6rem 1rem;
+
+	@media (min-width: 1024px) {
+		padding: 6rem 0;
+	}
+`
+
+const Overlay = styled.div`
+	bottom: 0;
+	position: fixed;
+	left: 0;
+	width: 100%;
+	height: 8rem;
+	z-index: 9999;
+	gap: 1rem;
+	background: rgba(0, 0, 0, 0.8);
+	color: rgba(255, 255, 255, 0.8);
+	display: flex;
+	padding: 1.5rem;
+	font-size: 0.875rem;
+	font-weight: 400;
+	letter-spacing: 0;
+	line-height: 1.5;
+	align-items: center;
+	justify-content: center;
+	backdrop-filter: blur(1rem);
+	text-align: center;
+
+	@media (min-width: 1024px) {
+		display: none;
+	}
 `
 
 const Container = styled.div`
