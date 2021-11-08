@@ -271,8 +271,8 @@ const NameBadge = styled.div.attrs((props) => ({
 
 const ChatBubble = styled.div.attrs((props) => ({
 	style: {
-		top: `${props.cursorIsInViewport ? 24 : 0}px`,
-		left: `${props.cursorIsInViewport ? 12 : 0}px`,
+		top: `${props.cursorIsInViewport ? 24 : props.isLocal ? 20 : 0}px`,
+		left: `${props.cursorIsInViewport ? 12 : props.isLocal ? 12 : 0}px`,
 		backgroundColor: props.color,
 		borderRadius: props.cursorIsInViewport
 			? props.isLocal
